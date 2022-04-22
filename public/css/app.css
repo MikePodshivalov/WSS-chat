@@ -10167,7 +10167,7 @@ body {
 .direct-chat-messages {
     transform: translate(0, 0);
     padding: 10px;
-    height: 250px;
+    height: 350px;
     overflow: auto
 }
 
