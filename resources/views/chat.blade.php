@@ -74,6 +74,7 @@
                         <div class="card-body">
                             <form action="#" method="post">
                                 <label for="username"></label>
+                                <input type="text" name="room_id" value="1" hidden>
                                 <input class="form-control mb-3 mt-5" id="username" type="text" name="username-1" placeholder="Username">
                                 <button id="enter-1" type="button" name="enter-1" value="enter-1" class="btn btn-warning btn-lg btn-block">Войти</button>
                             </form>
@@ -90,6 +91,19 @@
                 $(".card-body").hide();
                 $("#room-1").attr("hidden",false);
                 $(".direct-chat-messages").animate({ scrollTop: $('.direct-chat-messages').height()}, 1000);
+                $.ajax({
+                    url: '{{route('username.create')}}',
+                    method: 'post',
+                    headers: {
+                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    dataType: 'json',
+                    data: {username: $('#username').val(),
+                    room_id: 1},
+                    success: function(data){
+                        console.log(data);
+                    }
+                });
             }
         });
     </script>

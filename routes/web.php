@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('chat');
 });
+
+Route::post('/chat', [MessageController::class, 'index'])->name('chat.index');
+Route::post('/username', [MessageController::class, 'create'])->name('username.create');

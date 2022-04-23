@@ -2164,6 +2164,8 @@ module.exports = {
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+__webpack_require__(/*! ./myScripts */ "./resources/js/myScripts.js");
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -2194,6 +2196,32 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/myScripts.js":
+/*!***********************************!*\
+  !*** ./resources/js/myScripts.js ***!
+  \***********************************/
+/***/ (() => {
+
+$("#enter-1").on('click', function () {
+  if ($('#username').val() !== '') {
+    $(".card-body").hide();
+    $("#room-1").attr("hidden", false);
+    $(".direct-chat-messages").animate({
+      scrollTop: $('.direct-chat-messages').height()
+    }, 1000); // $.ajax({
+    //     url: '/',
+    //     method: 'post',
+    //     dataType: 'html',
+    //     data: {text: 'Текст'},
+    //     success: function(data){
+    //         alert(data);
+    //     }
+    // });
+  }
+});
 
 /***/ }),
 
