@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RoomController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MessageController;
 
@@ -14,9 +17,12 @@ use App\Http\Controllers\MessageController;
 |
 */
 
-Route::get('/', function () {
-    return view('chat');
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::post('/message', [MessageController::class, 'index'])->name('message.index');
+    Route::post('/message/store', [MessageController::class, 'store'])->name('message.store');
+    Route::delete('/room', [RoomController::class, 'exitUserFromRoom'])->name('room.exit');
 });
 
-Route::post('/chat', [MessageController::class, 'index'])->name('chat.index');
-Route::post('/username', [MessageController::class, 'create'])->name('username.create');
+
+Auth::routes();

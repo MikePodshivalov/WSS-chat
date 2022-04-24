@@ -1,18 +1,7 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <title>{{config('app.name')}}</title>
-</head>
-<body>
+@extends('layouts.app')
+@section('content')
     <div class="container">
-        <div class="page-content page-container" id="page-content">
+        <div class="page-content page-container border-dark" id="page-content">
             <div class="padding">
                 <div class="row container d-flex justify-content-left">
                     <div class="col-md-6">
@@ -79,6 +68,7 @@
                                 <button id="enter-1" type="button" name="enter-1" value="enter-1" class="btn btn-warning btn-lg btn-block">Войти</button>
                             </form>
                         </div>
+                        <button id="exit-1" type="button" name="exit-1" class="btn btn-warning btn-sm btn-block float-left exit" hidden>Выйти</button>
                     </div>
                 </div>
             </div>
@@ -90,16 +80,17 @@
             if ($('#username').val() !== '') {
                 $(".card-body").hide();
                 $("#room-1").attr("hidden",false);
+                $("#exit-1").attr("hidden",false);
                 $(".direct-chat-messages").animate({ scrollTop: $('.direct-chat-messages').height()}, 1000);
                 $.ajax({
-                    url: '{{route('username.create')}}',
+                    url: '{{route('chat.index')}}',
                     method: 'post',
                     headers: {
                         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
                     },
                     dataType: 'json',
                     data: {username: $('#username').val(),
-                    room_id: 1},
+                        room_id: 1},
                     success: function(data){
                         console.log(data);
                     }
@@ -107,6 +98,5 @@
             }
         });
     </script>
-</body>
+@endsection
 
-</html>

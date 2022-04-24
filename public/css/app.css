@@ -10168,7 +10168,7 @@ body {
     transform: translate(0, 0);
     padding: 10px;
     height: 350px;
-    overflow: auto
+    overflow: scroll;
 }
 
 .direct-chat-messages,
@@ -10360,5 +10360,9 @@ body {
     color: #fff;
     background-color: #f0ad4e;
     border-color: #eea236
+}
+
+.exit {
+    width: 250px;
 }
 
