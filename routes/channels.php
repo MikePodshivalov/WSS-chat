@@ -16,3 +16,21 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+Broadcast::channel('chat.{roomId}', function ($user, $roomId) {
+    if ($user->canJoinRoom($roomId)) {
+        return ['id' => $user->id, 'name' => $user->name];
+    }
+});
+
+//Broadcast::channel('messages', function ($user, $id) {
+//    return true;
+//});
+
+//Broadcast::channel('everywhere', function ($user) {
+//    return $user;
+//});
+//
+//Broadcast::channel('chat.{roomId}', function ($user, $roomId) {
+//    return $user;
+//});

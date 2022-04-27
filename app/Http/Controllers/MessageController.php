@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageAdded;
 use App\Models\Message;
 use App\Models\Room;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
@@ -13,18 +15,20 @@ class MessageController extends Controller
 {
     public function index(Request $request)
     {
-        $room_id = $request->room_id;
+        $roomId = $request->room_id;
         $message = Message::query()
-            ->where('room_id', $room_id)
-            ->latest()
-            ->get(['message', 'created_at'])
-            ->toArray();
+            ->where('room_id', $roomId)
+            ->leftJoin('users', function($join) {
+                $join->on('users.id', '=', 'messages.user_id');
+            })->latest()
+            ->get(['message', 'name', 'messages.created_at'])->toArray();
+
         $data = [
           'user' => Auth::user()->name,
-          'room_id' => $room_id,
+          'room_id' => $roomId,
           'messages' => $message,
         ];
-        Room::addUserToRoom($room_id, Auth::user()->id);
+        Room::addUserToRoom($roomId, Auth::user()->id);
         return Response::json($data, 200);
     }
 
@@ -40,12 +44,8 @@ class MessageController extends Controller
         $result = Message::create($data);
 
         if ($result) {
-            return Response::json([
-                'message' => $request->message,
-                'user' => Auth::user()->name,
-                'room_id' => $room_id,
-                'created' => $result->created_at->toDateTimeString(),
-            ], 201);
+            broadcast(new MessageAdded('ffffffffffffffffffff'));
+            return Response::json($result, 201);
         } else {
             return false;
         }

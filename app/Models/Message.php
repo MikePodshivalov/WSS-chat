@@ -16,6 +16,8 @@ class Message extends Model
         'room_id',
     ];
 
+    protected $dateFormat = 'Y-m-d H:i:s';
+
     public function room()
     {
         return $this->belongsTo(Room::class);

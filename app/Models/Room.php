@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Room extends Model
@@ -35,5 +36,10 @@ class Room extends Model
             ['room_id', $room_id],
             ['user_id', $user_id],
         ])->delete();
+    }
+
+    static public function listOfRoomsUserEntered(int $userId) : array
+    {
+        return DB::table('room_user')->where('user_id', $userId)->pluck('room_id')->toArray();
     }
 }

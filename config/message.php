@@ -1,4 +1,4 @@
 <?php
 return [
-    'last_minutes' => 5,
+    'messages_for_the_last_minutes' => 5,
 ];

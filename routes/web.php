@@ -16,13 +16,15 @@ use App\Http\Controllers\MessageController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::post('/message', [MessageController::class, 'index'])->name('message.index');
     Route::post('/message/store', [MessageController::class, 'store'])->name('message.store');
+    Route::post('/message', [MessageController::class, 'index'])->name('message.index');
+
     Route::delete('/room', [RoomController::class, 'exitUserFromRoom'])->name('room.exit');
 });
 
 
-Auth::routes();
+
