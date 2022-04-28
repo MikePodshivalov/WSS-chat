@@ -71,12 +71,6 @@
 {{--    <script src="https://cdn.jsdelivr.net/gh/centrifugal/centrifuge-js@2.8.4/dist/centrifuge.min.js"></script>--}}
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
     <script>
-
-
-
-
-
-
         $(document).ready(function() {
             $(".enter").on('click', function() {
                 const room = this.name.slice(-1);
@@ -108,7 +102,7 @@
 
                 let message = $("#message-" + room).val();
                 $.ajax({
-                    url: '{{route('message.store')}}',
+                    url: '{{route('message.z')}}',//поправить потом
                     method: 'post',
                     headers: {
                         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
@@ -170,7 +164,6 @@
                         '<img class="direct-chat-img" src="{{asset('images/male.png')}}" alt="message user image">' +
                         '<div class="direct-chat-text text-wrap">' + data.messages[i].message + '</div></div>');
                 }
-
             }
             message.animate({ scrollTop: message.height()}, 500);
         }
@@ -178,28 +171,20 @@
 
         Pusher.logToConsole = true;
 
-        var pusher = new Pusher('1fe647baf78aec18aed1', {
+        let pusher = new Pusher('095fc5f88b9afc8541a4', {
             cluster: 'eu',
-            auth: {
-                headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') }
-            }
         });
 
-        var channel = pusher.subscribe('news');
-        channel.bind('App\\Events\\MyNewEvent', function(data) {
-            alert('sdfsdfsdfsdf');
+        let channel = pusher.subscribe('channel-chat');
+        channel.bind('App\\Events\\ChatEvent', function(data) {
+            alert('oooooo');
         });
 
-        // const config = {subscribeEndpoint: '/broadcasting/auth'};
-        // const centrifuge = new Centrifuge('wss://centrifuge.example.com/connection/websocket', config);
-        //
-        // // CONNECTION_TOKEN must be obtained via generateConnectionToken ()
-        // centrifuge.setToken("CONNECTION_TOKEN");
-        // let subscription = centrifuge.subscribe("$private:channel", function (ctx) {
-        //     console.log('ctx');
-        // });
-
-        // centrifuge.connect();
+        // const Echo = window.Echo;
+        // let channel = Echo.channel('channel-chat')
+        //     .listen('ChatEvent', function (data) {
+        //         console.log(data.message);
+        //     })
 
 
         // window.users = [];

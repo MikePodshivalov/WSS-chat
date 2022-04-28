@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\ChatEvent;
 use App\Events\MyEvent;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoomController;
@@ -27,3 +28,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/room', [RoomController::class, 'exitUserFromRoom'])->name('room.exit');
 });
 
+Route::post('message/z', function (Request $request) {
+    ChatEvent::dispatch('dddddddddd');
+})->name('message.z');

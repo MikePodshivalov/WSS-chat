@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ChatEvent;
 use App\Events\MyEvent;
 
 use App\Events\MyNewEvent;
@@ -10,6 +11,7 @@ use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
+use Pusher\Pusher;
 
 
 class MessageController extends Controller
@@ -46,7 +48,10 @@ class MessageController extends Controller
         $result = Message::create($data);
 
         if ($result) {
-            event(new MyNewEvent($request->message));
+//            $pusher = new Pusher(env('APP_KEY'), env('APP_SECRET'), env('APP_ID'), array('cluster' => env('APP_CLUSTER')));
+//            $pusher->trigger('my-channel', 'my-event', array('message' => 'hello world'));
+//            event(new ChatEvent($request->message));
+
             return Response::json([
                 'message' => $request->message,
                 'user' => Auth::user()->name,
