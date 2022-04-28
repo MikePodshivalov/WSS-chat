@@ -77,7 +77,7 @@
                 $("#enter-" + room).attr("hidden",true);
                 scroll.animate({ scrollTop: scroll.height()}, 500);
                 $.ajax({
-                    url: '{{route('message.index')}}',
+                    url: '{{route('messages.index')}}',
                     method: 'post',
                     headers: {
                         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
@@ -98,7 +98,7 @@
 
                 let message = $("#message-" + room).val();
                 $.ajax({
-                    url: '{{route('message.store')}}',
+                    url: '{{route('messages.store')}}',
                     method: 'post',
                     headers: {
                         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
@@ -123,7 +123,7 @@
             $(".exit").on('click', function () {
                 const room = this.id.slice(-1);
                 $.ajax({
-                    url: '{{route('room.exit')}}',
+                    url: '{{route('rooms.exit')}}',
                     method: 'delete',
                     headers: {
                         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')

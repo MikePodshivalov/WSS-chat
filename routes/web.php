@@ -20,8 +20,19 @@ Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::post('/message/store', [MessagesController::class, 'store'])->name('message.store');
-    Route::post('/message', [MessagesController::class, 'index'])->name('message.index');
+    Route::post('/messages/store', [MessagesController::class, 'store'])->name('messages.store');
+    Route::post('/messages', [MessagesController::class, 'index'])->name('messages.index');
 
-    Route::delete('/room', [RoomsController::class, 'exitUserFromRoom'])->name('room.exit');
+    Route::delete('/rooms', [RoomsController::class, 'exitUserFromRoom'])->name('rooms.exit');
 });
+
+Route::view('/send', 'chat');
+Route::post('/send', function(Request $request) {
+    $request->validate([
+        'message' => 'required',
+    ]);
+    $message = [
+        'message' => $request->message,
+    ];
+    broadcast(new App\Events\ChatEvent($message));
+})->name('send');
