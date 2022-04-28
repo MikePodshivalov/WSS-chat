@@ -16,5 +16,8 @@ mix.js('resources/js/app.js', 'public/js')
     .postCss('resources/css/app.css', 'public/css', [
         //
     ])
-    .copyDirectory('resources/images', 'public/images');
+    .copyDirectory('resources/images', 'public/images')
+    .js('node_modules/popper.js/dist/popper.js', 'public/js').sourceMaps();
 
+// mix.js('resources/js/app.js', 'public/js')
+//     .sass('resources/sass/app.scss', 'public/css').js('node_modules/popper.js/dist/popper.js', 'public/js').sourceMaps();

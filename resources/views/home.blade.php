@@ -68,7 +68,14 @@
         </div>
     </div>
     <script src="{{ asset("js/app.js") }}"></script>
+{{--    <script src="https://cdn.jsdelivr.net/gh/centrifugal/centrifuge-js@2.8.4/dist/centrifuge.min.js"></script>--}}
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
     <script>
+
+
+
+
+
 
         $(document).ready(function() {
             $(".enter").on('click', function() {
@@ -114,19 +121,11 @@
                             message.append('<div class="direct-chat-msg right">' +
                                 '<div class="direct-chat-info clearfix">' +
                                 '<span class="direct-chat-name pull-right">' + data.user + ' ' + '</span>' +
-                                '<span class="direct-chat-timestamp pull-left">' + data.created + '</span>' +
+                                '<span class="direct-chat-timestamp pull-left">' + data.created_at.replace("T", " ").replace(".000000Z", "") + '</span>' +
                                 '</div><img class="direct-chat-img" src="{{asset('images/me.png')}}" alt="message user image">' +
                                 '<div class="direct-chat-text text-wrap">' + data.message + '</div></div>');
                             message.animate({ scrollTop: message.height()}, 500);
                             $("#message-" + data.room_id).val('');
-
-                            const chlMessages = window.Echo.channel('Message')
-                                .listen('.message-added', (evt) => {
-                                    const newMessage = evt.message;
-                                    console.log(newMessage);
-                                });
-
-                            console.log(chlMessages);
                         }
                     }
                 });
@@ -175,6 +174,32 @@
             }
             message.animate({ scrollTop: message.height()}, 500);
         }
+
+
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('1fe647baf78aec18aed1', {
+            cluster: 'eu',
+            auth: {
+                headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') }
+            }
+        });
+
+        var channel = pusher.subscribe('news');
+        channel.bind('App\\Events\\MyNewEvent', function(data) {
+            alert('sdfsdfsdfsdf');
+        });
+
+        // const config = {subscribeEndpoint: '/broadcasting/auth'};
+        // const centrifuge = new Centrifuge('wss://centrifuge.example.com/connection/websocket', config);
+        //
+        // // CONNECTION_TOKEN must be obtained via generateConnectionToken ()
+        // centrifuge.setToken("CONNECTION_TOKEN");
+        // let subscription = centrifuge.subscribe("$private:channel", function (ctx) {
+        //     console.log('ctx');
+        // });
+
+        // centrifuge.connect();
 
 
         // window.users = [];

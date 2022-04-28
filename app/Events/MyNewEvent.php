@@ -2,17 +2,16 @@
 
 namespace App\Events;
 
-use App\Models\Message;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Broadcast;
 
-class MessageAdded implements ShouldBroadcast
+class MyNewEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -21,8 +20,10 @@ class MessageAdded implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(public $message)
-    {}
+    public function __construct(public $news)
+    {
+        //
+    }
 
     /**
      * Get the channels the event should broadcast on.
@@ -31,19 +32,12 @@ class MessageAdded implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('messages');
-    }
-
-    public function broadcastAs()
-    {
-        return 'message-added';
+        Broadcast::routes(['middleware' => ['auth:api']]);
+        return ['news'];
     }
 
     public function broadcastWith()
     {
-        return [
-            'data' => $this->message,
-        ];
+        return [12 => 34];
     }
-
 }

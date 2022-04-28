@@ -143,9 +143,15 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/ringcentral/psr7" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/cboden/ratchet" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/psr-http-message-bridge" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/opekunov/laravel-centrifugo-broadcaster" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/predis/predis" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="bulma" level="application" />
+    <orderEntry type="library" name="bulma" level="application" />
+    <orderEntry type="library" name="@popperjs/core" level="application" />
+    <orderEntry type="library" name="centrifuge" level="application" />
+    <orderEntry type="library" name="pusher" level="application" />
   </component>
 </module>

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\MessageAdded;
+use App\Events\MyEvent;
+
+use App\Events\MyNewEvent;
 use App\Models\Message;
 use App\Models\Room;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Response;
 
 class MessageController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, Room $room)
     {
         $roomId = $request->room_id;
         $message = Message::query()
@@ -28,12 +29,13 @@ class MessageController extends Controller
           'room_id' => $roomId,
           'messages' => $message,
         ];
-        Room::addUserToRoom($roomId, Auth::user()->id);
+        $room->addUserToRoom($roomId, Auth::user()->id);
         return Response::json($data, 200);
     }
 
     public function store(Request $request)
     {
+
         $user_id = Auth::user()->id;
         $room_id = $request->room_id;
         $data = [
@@ -44,8 +46,13 @@ class MessageController extends Controller
         $result = Message::create($data);
 
         if ($result) {
-            broadcast(new MessageAdded('ffffffffffffffffffff'));
-            return Response::json($result, 201);
+            event(new MyNewEvent($request->message));
+            return Response::json([
+                'message' => $request->message,
+                'user' => Auth::user()->name,
+                'room_id' => $room_id,
+                'created_at' => $result->created_at,
+            ], 201);
         } else {
             return false;
         }

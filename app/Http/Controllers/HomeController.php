@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MyEvent;
+use App\Events\MyNewEvent;
 use App\Models\Message;
 use App\Models\Room;
 use Carbon\CarbonInterval;
@@ -17,11 +19,11 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Room $room)
     {
         $userId = Auth::user()->id;
         $userName = Auth::user()->name;
-        $roomsEntered = Room::listOfRoomsUserEntered($userId);
+        $roomsEntered = $room->listOfRoomsUserEntered($userId);
         $rooms = Room::all();
         $messages = Message::query()
             ->join('users', 'users.id', '=', 'messages.user_id')

@@ -11,7 +11,10 @@
         "laravel/framework": "^9.2",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
-        "laravel/ui": "^3.4"
+        "laravel/ui": "^3.4",
+        "opekunov/laravel-centrifugo-broadcaster": "^1.2",
+        "predis/predis": "^1.1",
+        "pusher/pusher-php-server": "^7.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.12",

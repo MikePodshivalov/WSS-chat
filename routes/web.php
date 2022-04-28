@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\MyEvent;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +26,4 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::delete('/room', [RoomController::class, 'exitUserFromRoom'])->name('room.exit');
 });
-
-
 

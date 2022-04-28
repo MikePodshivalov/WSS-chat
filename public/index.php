@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\MyEvent;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
@@ -53,3 +54,5 @@ $response = $kernel->handle(
 )->send();
 
 $kernel->terminate($request, $response);
+
+
