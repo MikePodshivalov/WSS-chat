@@ -1,12 +1,10 @@
 <?php
 
-use App\Events\ChatEvent;
-use App\Events\MyEvent;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\RoomController;
+use App\Http\Controllers\RoomsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MessageController;
+use App\Http\Controllers\MessagesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,8 +20,8 @@ Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::post('/message/store', [MessageController::class, 'store'])->name('message.store');
-    Route::post('/message', [MessageController::class, 'index'])->name('message.index');
+    Route::post('/message/store', [MessagesController::class, 'store'])->name('message.store');
+    Route::post('/message', [MessagesController::class, 'index'])->name('message.index');
 
-    Route::delete('/room', [RoomController::class, 'exitUserFromRoom'])->name('room.exit');
+    Route::delete('/room', [RoomsController::class, 'exitUserFromRoom'])->name('room.exit');
 });

@@ -9,11 +9,9 @@
                             <div class="box box-warning direct-chat direct-chat-warning">
                                 <div class="box-header with-border user-list">
                                     <h3 class="box-title list-group">Chat room {{$room->id}}</h3>
-
-{{--                                        <span class="badge bg-yellow" >User1</span>--}}
-{{--                                        <span class="badge bg-yellow" >User2</span>--}}
+                                        <span class="badge bg-yellow" >User1</span>
+                                        <span class="badge bg-yellow" >User2</span>
                                 </div>
-
                                     <div class="box-body">
                                         <div id="room-{{$room->id}}" hidden>
                                             <div id="chat-messages-{{$room->id}}" class="direct-chat-messages">
@@ -47,7 +45,7 @@
                                                         <div class="input-group-prepend">
                                                             <button id="message-send-{{$room->id}}" name="message-send" class="btn btn-warning message-send" type="submit">Send</button>
                                                         </div>
-                                                        <input type="text" id="message-{{$room->id}}" name="message" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
+                                                        <input type="text" id="message-{{$room->id}}" name="message" class="form-control message-send">
                                                     </div>
                                                 </form>
                                                 <button id="exit-{{$room->id}}" type="button" name="exit-{{$room->id}}" class="btn btn-danger btn-sm btn-block float-right mb-1 exit" hidden>Выйти из Chat room {{$room->id}}</button>
@@ -113,7 +111,7 @@
                             message.append('<div class="direct-chat-msg right">' +
                                 '<div class="direct-chat-info clearfix">' +
                                 '<span class="direct-chat-name pull-right">' + data.user + ' ' + '</span>' +
-                                '<span class="direct-chat-timestamp pull-left">' + data.created_at.replace("T", " ").replace(".000000Z", "") + '</span>' +
+                                '<span class="direct-chat-timestamp pull-left">' + data.created_at + '</span>' +
                                 '</div><img class="direct-chat-img" src="{{asset('images/me.png')}}" alt="message user image">' +
                                 '<div class="direct-chat-text text-wrap">' + data.message + '</div></div>');
                             message.animate({ scrollTop: message.height()}, 500);
@@ -152,13 +150,13 @@
                     message.append('<div class="direct-chat-msg right">' +
                         '<div class="direct-chat-info clearfix">' +
                         '<span class="direct-chat-name pull-right">' + data.messages[i].name + ' ' + '</span>' +
-                        '<span class="direct-chat-timestamp pull-left">' + data.messages[i].created_at.replace("T", " ").replace(".000000Z", "") + '</span>' +
+                        '<span class="direct-chat-timestamp pull-left">' + data.messages[i].created_at + '</span>' +
                         '</div><img class="direct-chat-img" src="{{asset('images/me.png')}}" alt="message user image">' +
                         '<div class="direct-chat-text text-wrap">' + data.messages[i].message + '</div></div>');
                 } else {
                     message.append('<div class="direct-chat-msg"><div class="direct-chat-info clearfix">' +
                         '<span class="direct-chat-name pull-left">' + data.messages[i].name + ' ' + '</span><span' +
-                        'class="direct-chat-timestamp pull-right">' + data.messages[i].created_at.replace("T", " ").replace(".000000Z", "") + '</span></div>' +
+                        'class="direct-chat-timestamp pull-right">' + data.messages[i].created_at + '</span></div>' +
                         '<img class="direct-chat-img" src="{{asset('images/male.png')}}" alt="message user image">' +
                         '<div class="direct-chat-text text-wrap">' + data.messages[i].message + '</div></div>');
                 }

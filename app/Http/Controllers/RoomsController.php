@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
-class RoomController extends Controller
+class RoomsController extends Controller
 {
     public function exitUserFromRoom(Request $request, Room $room)
     {

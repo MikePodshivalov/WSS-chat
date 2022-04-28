@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
 
-class MessageController extends Controller
+class MessagesController extends Controller
 {
     public function index(Request $request, Room $room)
     {
