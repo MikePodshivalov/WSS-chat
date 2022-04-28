@@ -2,12 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\MyEvent;
-use App\Events\MyNewEvent;
 use App\Models\Message;
 use App\Models\Room;
-use Carbon\CarbonInterval;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;

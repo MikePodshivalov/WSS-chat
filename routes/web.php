@@ -27,7 +27,3 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::delete('/room', [RoomController::class, 'exitUserFromRoom'])->name('room.exit');
 });
-
-Route::post('message/z', function (Request $request) {
-    ChatEvent::dispatch('dddddddddd');
-})->name('message.z');

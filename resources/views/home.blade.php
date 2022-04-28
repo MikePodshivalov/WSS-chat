@@ -68,8 +68,6 @@
         </div>
     </div>
     <script src="{{ asset("js/app.js") }}"></script>
-{{--    <script src="https://cdn.jsdelivr.net/gh/centrifugal/centrifuge-js@2.8.4/dist/centrifuge.min.js"></script>--}}
-    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
     <script>
         $(document).ready(function() {
             $(".enter").on('click', function() {
@@ -102,7 +100,7 @@
 
                 let message = $("#message-" + room).val();
                 $.ajax({
-                    url: '{{route('message.z')}}',//поправить потом
+                    url: '{{route('message.store')}}',
                     method: 'post',
                     headers: {
                         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
@@ -169,16 +167,16 @@
         }
 
 
-        Pusher.logToConsole = true;
-
-        let pusher = new Pusher('095fc5f88b9afc8541a4', {
-            cluster: 'eu',
-        });
-
-        let channel = pusher.subscribe('channel-chat');
-        channel.bind('App\\Events\\ChatEvent', function(data) {
-            alert('oooooo');
-        });
+        // Pusher.logToConsole = true;
+        //
+        // let pusher = new Pusher('095fc5f88b9afc8541a4', {
+        //     cluster: 'eu',
+        // });
+        //
+        // let channel = pusher.subscribe('channel-chat');
+        // channel.bind('App\\Events\\ChatEvent', function(data) {
+        //     alert('oooooo');
+        // });
 
         // const Echo = window.Echo;
         // let channel = Echo.channel('channel-chat')

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ee8c251640b730e9793cc89c347a0752",
+    "content-hash": "30e282cae652dfa169af27420facdda1",
     "packages": [
         {
             "name": "beyondcode/laravel-websockets",
@@ -1196,16 +1196,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v9.10.0",
+            "version": "v9.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "ef2a61ad1e6f1b7ce613675217e25a51c821f826"
+                "reference": "93414b1c7c0a56081d96c060bb850ac192d3d323"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/ef2a61ad1e6f1b7ce613675217e25a51c821f826",
-                "reference": "ef2a61ad1e6f1b7ce613675217e25a51c821f826",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/93414b1c7c0a56081d96c060bb850ac192d3d323",
+                "reference": "93414b1c7c0a56081d96c060bb850ac192d3d323",
                 "shasum": ""
             },
             "require": {
@@ -1371,7 +1371,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2022-04-27T14:07:25+00:00"
+            "time": "2022-04-28T13:18:25+00:00"
         },
         {
             "name": "laravel/sanctum",
@@ -2357,72 +2357,6 @@
                 "source": "https://github.com/nikic/PHP-Parser/tree/v4.13.2"
             },
             "time": "2021-11-30T19:35:32+00:00"
-        },
-        {
-            "name": "opekunov/laravel-centrifugo-broadcaster",
-            "version": "v1.2.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Opekunov/laravel-centrifugo-broadcaster.git",
-                "reference": "820b402098c227466fb67c4f167981ed17da5417"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Opekunov/laravel-centrifugo-broadcaster/zipball/820b402098c227466fb67c4f167981ed17da5417",
-                "reference": "820b402098c227466fb67c4f167981ed17da5417",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "~6.0|^7.0",
-                "laravel/framework": "^8.75|^9.0",
-                "php": "^7.4|^8.0"
-            },
-            "require-dev": {
-                "orchestra/testbench": "^v7.4.0",
-                "phpunit/phpunit": "^9.5"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Opekunov\\Centrifugo\\CentrifugoServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Opekunov\\Centrifugo\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Aleksandr Opekunov",
-                    "email": "iam@opekunov.com",
-                    "role": "Creator"
-                }
-            ],
-            "description": "Centrifugo broadcaster for laravel 5.6-9.x and Centrifugo >= 2.8.1",
-            "homepage": "https://github.com/opekunov/laravel-centrifugo-broadcaster",
-            "keywords": [
-                "Socket",
-                "broadcaster",
-                "centrifugo",
-                "laravel",
-                "laravel-broadcaster",
-                "real time",
-                "web socket",
-                "web-socket"
-            ],
-            "support": {
-                "email": "iam@opekunov.com",
-                "issues": "https://github.com/opekunov/laravel-centrifugo-broadcaster/issues",
-                "source": "https://github.com/opekunov/laravel-centrifugo-broadcaster"
-            },
-            "time": "2022-04-20T10:01:28+00:00"
         },
         {
             "name": "paragonie/random_compat",

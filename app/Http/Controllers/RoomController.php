@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\MyEvent;
-use App\Events\MyNewEvent;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
