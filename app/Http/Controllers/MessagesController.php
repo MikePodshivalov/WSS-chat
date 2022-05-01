@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\ChatEvent;
 use App\Events\MessageSentEvent;
 use App\Events\RoomEnteredEvent;
 use App\Models\Message;

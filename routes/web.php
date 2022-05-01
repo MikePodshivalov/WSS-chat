@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoomsController;
-use App\Http\Controllers\SendController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MessagesController;
@@ -24,10 +23,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::post('/messages/store', [MessagesController::class, 'store'])->name('messages.store');
     Route::post('/messages', [MessagesController::class, 'fetchMessages'])->name('fetch.messages');
-
     Route::delete('/rooms', [RoomsController::class, 'exitUserFromRoom'])->name('rooms.exit');
 });
-
-Route::view('/send', 'chat');
-Route::post('/send', [SendController::class, 'send']);
-

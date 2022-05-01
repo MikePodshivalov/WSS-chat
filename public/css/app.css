@@ -10366,3 +10366,7 @@ body {
     width: 250px;
 }
 
+.text-message {
+    word-wrap: break-word;
+}
+

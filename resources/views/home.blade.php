@@ -7,44 +7,20 @@
                     @foreach($rooms as $room)
                         <div class="col-md-6 mb-2">
                             <div class="box box-warning direct-chat direct-chat-warning">
-                                <div class="box-header with-border user-list" id="user-list-{{$room->id}}">
+                                <div class="box-header with-border user-list" id="user-list">
                                     <h3 class="box-title list-group">Chat room {{$room->id}}</h3>
-{{--                                        <span class="badge bg-yellow" >User1</span>--}}
-{{--                                        <span class="badge bg-yellow" >User2</span>--}}
+                                    <div id="user-list-{{$room->id}}"></div>
                                 </div>
                                     <div class="box-body">
                                         <div id="room-{{$room->id}}" hidden>
-                                            <div id="chat-messages-{{$room->id}}" class="direct-chat-messages">
-{{--                                                @foreach($messages as $message)--}}
-{{--                                                    @if($message->room_id === $room->id)--}}
-{{--                                                        @if($message->name === Auth::user()->name)--}}
-{{--                                                            <div class="direct-chat-msg right">--}}
-{{--                                                                <div class="direct-chat-info clearfix">--}}
-{{--                                                                    <span class="direct-chat-name pull-right">{{$message->name}}</span>--}}
-{{--                                                                    <span class="direct-chat-timestamp pull-left">{{$message->created_at}}</span>--}}
-{{--                                                                </div>--}}
-{{--                                                                <img class="direct-chat-img" src="{{asset('images/me.png')}}" alt="message user image">--}}
-{{--                                                                <div class="direct-chat-text text-wrap">{{$message->message}}</div>--}}
-{{--                                                            </div>--}}
-{{--                                                        @else--}}
-{{--                                                            <div class="direct-chat-msg">--}}
-{{--                                                                <div class="direct-chat-info clearfix">--}}
-{{--                                                                    <span class="direct-chat-name pull-left">{{$message->name}}</span>--}}
-{{--                                                                    <span class="direct-chat-timestamp pull-right">{{$message->created_at}}</span>--}}
-{{--                                                                </div>--}}
-{{--                                                                <img class="direct-chat-img" src="{{asset('images/male.png')}}" alt="message user image">--}}
-{{--                                                                <div class="direct-chat-text text-wrap"> {{$message->message}} </div>--}}
-{{--                                                            </div>--}}
-{{--                                                        @endif--}}
-{{--                                                    @endif--}}
-{{--                                                @endforeach--}}
-                                            </div>
+                                            <div id="chat-messages-{{$room->id}}" class="direct-chat-messages"></div>
                                             <div class="box-footer">
                                                 <form class="form-message-send" id="form-message-send-{{$room->id}}" action="#" method="post">
                                                     <div class="input-group mb-3">
                                                         <div class="input-group-prepend">
-                                                            <button id="message-send-{{$room->id}}" name="message-send" class="btn btn-warning message-send" type="submit">Send</button>
+                                                            <button id="message-send-{{$room->id}}" name="message-send" class="btn btn-warning message-send-btn" type="submit">Send</button>
                                                         </div>
+                                                        <label for="message-{{$room->id}}"></label>
                                                         <input type="text" id="message-{{$room->id}}" name="message" class="form-control message-send">
                                                     </div>
                                                 </form>
@@ -72,13 +48,12 @@
             $(".enter").on('click', function() {
                 const room = this.name.slice(-1);
                 let scroll = $('#chat-messages-' + room);
-                $("#card-body-enter-" + room).attr("hidden",true);
-                $("#room-" + room).attr("hidden",false);
+                $('#card-body-enter-' + room).attr("hidden",true);
+                $('#room-' + room).attr("hidden",false);
 
                 Http.post("{{route('fetch.messages')}}", {
                     'room_id': room,
                 }).then(function (data) {
-                    console.log(data);
                     if (data.status === 200) {
                         renderMessages(data.data);
                         scroll.animate({scrollTop: $(this).height()});
@@ -94,29 +69,33 @@
                         let list = '';
 
                         for (let i = 0; i < users.length; i++) {
-                            list += `<span class="badge bg-yellow" >${users[i].name}</span>` + ` `;
+                            list += `<span class="badge bg-yellow" id="user-${users[i].name}">${users[i].name}</span>` + ` `;
                         }
-
                         $('#user-list-' + room).append(list);
-                        console.log(users);
                     })
                     .joining((user) => {
                         $('#user-list-' + room).append(`<span class="badge bg-yellow" id="user-${user.name}">${user.name}</span>`);
-                        console.log(user);
                     })
                     .leaving((user) => {
                         $('#user-' + user.name).remove();
-                        console.log(user)
                     })
                     .listen('MessageSentEvent', (data) => {
                         let messageGet = $('#chat-messages-' + data.roomId);
                         messageGet.append(theirMessages(data));
-                        // console.log(e);
                     });
+
+                //выход из комнаты по нажатию на кнопку
+                $('.exit').on('click', function () {
+                    const room = this.id.slice(-1);
+                    $('#card-body-enter-' + room).attr("hidden",false);
+                    $('#room-' + room).attr("hidden",true);
+                    window.Echo.leave(`room.${room}`);
+                    $('#user-list-' + room).html('');
+                });
             });
 
             //Отправляем сообщение
-            $('.message-send').click(function (e) {
+            $('.message-send-btn').click(function (e) {
                 e.preventDefault();
                 const room = this.id.slice(-1);
                 const message = $("#message-" + room);
@@ -134,40 +113,22 @@
                             <span class="direct-chat-timestamp pull-left">${response.data.created_at}</span>
                         </div>
                             <img class="direct-chat-img" src="{{asset('images/me.png')}}" alt="message user image">
-                            <div class="direct-chat-text text-wrap">${response.data.message}</div>
+                            <div class="direct-chat-text">
+                                <div class="text-message">
+                                    ${response.data.message}
+                                </div>
+                            </div>
                         </div>`);
                         messageCreated.animate({scrollTop: $(this).height()});
-                        $("#message-" + response.data.room_id).val('');
+                        $('#message-' + response.data.room_id).val('');
                 }}).catch(function (error) {
                         console.log(error);
                 });
             });
-
-            {{--$(".exit").on('click', function () {--}}
-            {{--    const room = this.id.slice(-1);--}}
-            {{--    $.ajax({--}}
-            {{--        url: '{{route('rooms.exit')}}',--}}
-            {{--        method: 'delete',--}}
-            {{--        headers: {--}}
-            {{--            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')--}}
-            {{--        },--}}
-            {{--        dataType: 'json',--}}
-            {{--        data: {room_id: room},--}}
-            {{--        success: function(data){--}}
-            {{--            if(data) {--}}
-            {{--                $("#card-body-" + room).attr("hidden",false);--}}
-            {{--                $("#room-" + room).attr("hidden",true);--}}
-            {{--                $("#exit-" + room).attr("hidden",true);--}}
-            {{--                $("#enter-" + room).attr("hidden",false);--}}
-            {{--            }--}}
-            {{--        }--}}
-            {{--    });--}}
-            {{--});--}}
         });
 
         function renderMessages(data) {
             let message = $('#chat-messages-' + data.room_id);
-            // message.html('');
             if (data.messages.length === 0) {
                 return;
             }
@@ -181,27 +142,34 @@
             message.animate({scrollTop: $(this).height()});
         }
 
-        function myMessage($data) {
+        function myMessage(data) {
             return `<div class="direct-chat-msg right">
             <div class="direct-chat-info clearfix">
                 <span class="direct-chat-name pull-right"><strong>${data.user.name}</strong> </span>
                 <span class="direct-chat-timestamp pull-left">${data.created_at}</span>
             </div>
             <img class="direct-chat-img" src="{{asset('images/me.png')}}" alt="message user image">
-            <div class="direct-chat-text">${data.message}</div>
+                <div class="direct-chat-text">
+                    <div class="text-message">
+                        ${data.message}
+                    </div>
+                </div>
             </div>`;
         }
 
-        function theirMessages($data) {
+        function theirMessages(data) {
             return `<div class="direct-chat-msg">
             <div class="direct-chat-info clearfix">
                 <span class="direct-chat-name pull-left"><strong>${data.user.name}</strong> </span>
                 <span class="direct-chat-timestamp pull-right">${data.created_at}</span>
             </div>
             <img class="direct-chat-img" src="{{asset('images/male.png')}}" alt="message user image">
-            <div class="direct-chat-text text-wrap">${data.message}</div>
+            <div class="direct-chat-text text-wrap">
+                <div class="text-message">
+                    ${data.message}
+                </div>
+            </div>
             </div>`;
         }
     </script>
 @endsection
-
