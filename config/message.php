@@ -1,4 +1,4 @@
 <?php
 return [
-    'N' => env('MINUTES', 30),
+    'N' => 5,
 ];
