@@ -82,6 +82,7 @@
                     .listen('MessageSentEvent', (data) => {
                         let messageGet = $('#chat-messages-' + data.roomId);
                         messageGet.append(theirMessages(data));
+                        messageGet.animate({scrollTop: $(this).height()});
                     });
 
                 //выход из комнаты по нажатию на кнопку
@@ -104,7 +105,6 @@
                     'room_id': room,
                     'message': message.val()
                 }).then(function (response) {
-                    console.log(response);
                     if (response.status === 201) {
                         let messageCreated = $('#chat-messages-' + response.data.room_id);
                         messageCreated.append(`<div class="direct-chat-msg right">

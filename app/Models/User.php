@@ -53,9 +53,7 @@ class User extends Authenticatable
 
     public function hasJoined($roomId)
     {
-//        $room = $this->rooms->where('id', $roomId)->first();
-//
-//        return $room ? true : false;
-        return true;
+        $room = Room::query()->where('id', $roomId)->first();
+        return (bool)$room;
     }
 }

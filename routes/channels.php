@@ -24,7 +24,3 @@ Broadcast::channel('room.{roomId}', function ($user, $roomId) {
         ];
     }
 });
-
-Broadcast::channel('message', function ($user) {
-    return Auth::check();
-});
