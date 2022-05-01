@@ -5,6 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>Chat</title>
 </head>
@@ -48,7 +49,7 @@
                 if (message.val() === '') {
                     message.addClass('is-invalid');
                 } else {
-                    Http.post("{{route('send')}}", {
+                    Http.post("{{url('send')}}", {
                         'message': message.val()
                     }).then(() => {
                         message.val('');
@@ -57,9 +58,10 @@
             });
 
             let channel = Echo.channel('channel-chat')
-                .listen('ChatEvent', function (data) {
+                .listen('.App\\Events\\ChatEvent', function (data) {
+                    console.log(data.message.message);
                    $('#data-message')
-                    .append('<strong>${data.message.name}</strong>: ${data.message.message}<br>');
+                    .append(data.message.message + '<br>');
                 });
         })
     </script>

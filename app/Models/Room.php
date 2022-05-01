@@ -13,7 +13,7 @@ class Room extends Model
 
     public $timestamps = false;
 
-    public function message()
+    public function messages()
     {
         return $this->hasMany(Message::class);
     }
@@ -23,10 +23,10 @@ class Room extends Model
         return $this->belongsToMany(User::class);
     }
 
-    public function addUserToRoom(int $room_id, int $user_id)
+    public function addUserToRoom(User $user, Room $room)
     {
         return DB::table('room_user')->insert(
-            ['room_id' => $room_id, 'user_id' => $user_id]
+            ['user_id' => $user->id, 'room_id' => $room->id,]
         );
     }
 

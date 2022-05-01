@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ChatEvent;
+use App\Events\MessageSentEvent;
+use App\Events\RoomEnteredEvent;
 use App\Models\Message;
 use App\Models\Room;
 use Illuminate\Http\Request;
@@ -11,47 +14,48 @@ use Illuminate\Support\Facades\Response;
 
 class MessagesController extends Controller
 {
-    public function index(Request $request, Room $room)
+    public function fetchMessages(Request $request, Room $room, Message $message)
     {
-        $roomId = $request->room_id;
-        $message = Message::query()
-            ->where('room_id', $roomId)
-            ->leftJoin('users', function($join) {
-                $join->on('users.id', '=', 'messages.user_id');
-            })->latest()
-            ->get(['message', 'name', 'messages.created_at'])->toArray();
+        $request->validate([
+            'room_id' => 'required|integer',
+        ]);
 
-        $data = [
-          'user' => Auth::user()->name,
+        $roomId = $request->room_id;
+
+        $responseData = [
+          'user' => $request->user()->name,
           'room_id' => $roomId,
-          'messages' => $message,
+          'messages' => $message->fetchMessages($roomId),
         ];
-        $room->addUserToRoom($roomId, Auth::user()->id);
-        return Response::json($data, 200);
+
+        event(new RoomEnteredEvent($request->user(), $roomId));
+
+        return Response::json($responseData, 200);
     }
 
     public function store(Request $request)
     {
+        $request->validate([
+            'room_id' => 'required|integer',
+            'message' => 'required',
+        ]);
 
-        $user_id = Auth::user()->id;
-        $room_id = $request->room_id;
-        $data = [
-            'message' => $request->message,
-            'user_id' => $user_id,
-            'room_id' => $room_id,
-        ];
-        $result = Message::create($data);
+        $message = Message::query()->create([
+            'message' => $request->get('message'),
+            'user_id' => $request->user()->id,
+            'room_id' => $request->get('room_id')
+        ]);
 
-        if ($result) {
+        if ($message) {
+            broadcast(new MessageSentEvent($request->get('room_id'), $request->user(), $request->get('message'), $message->created_at))->toOthers();
             return Response::json([
-                'message' => $request->message,
-                'user' => Auth::user()->name,
-                'room_id' => $room_id,
-                'created_at' => $result->created_at,
+                'message' => $request->get('message'),
+                'user' => $request->user()->name,
+                'room_id' => $request->get('room_id'),
+                'created_at' => $message->created_at,
             ], 201);
         } else {
             return false;
         }
-
     }
 }

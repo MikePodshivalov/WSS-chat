@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoomsController;
+use App\Http\Controllers\SendController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MessagesController;
+use Illuminate\Support\Facades\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,18 +23,11 @@ Auth::routes();
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::post('/messages/store', [MessagesController::class, 'store'])->name('messages.store');
-    Route::post('/messages', [MessagesController::class, 'index'])->name('messages.index');
+    Route::post('/messages', [MessagesController::class, 'fetchMessages'])->name('fetch.messages');
 
     Route::delete('/rooms', [RoomsController::class, 'exitUserFromRoom'])->name('rooms.exit');
 });
 
 Route::view('/send', 'chat');
-Route::post('/send', function(Request $request) {
-    $request->validate([
-        'message' => 'required',
-    ]);
-    $message = [
-        'message' => $request->message,
-    ];
-    broadcast(new App\Events\ChatEvent($message));
-})->name('send');
+Route::post('/send', [SendController::class, 'send']);
+

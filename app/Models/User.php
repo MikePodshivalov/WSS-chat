@@ -41,7 +41,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function message()
+    public function messages()
     {
         return $this->hasMany(Message::class);
     }
@@ -49,5 +49,13 @@ class User extends Authenticatable
     public function rooms()
     {
         return $this->belongsToMany(Room::class);
+    }
+
+    public function hasJoined($roomId)
+    {
+//        $room = $this->rooms->where('id', $roomId)->first();
+//
+//        return $room ? true : false;
+        return true;
     }
 }

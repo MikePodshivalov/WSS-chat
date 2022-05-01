@@ -2,24 +2,31 @@
 
 namespace App\Events;
 
+use App\Models\Room;
 use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ChatEvent implements ShouldBroadcast
+class RoomEnteredEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @param $message
+     * The name of the queue on which to place the event
      */
-    public function __construct(public $message)
+    public $broadcastQueue = 'events:room-joined';
+
+    /**
+     * Create a new event instance.
+     *
+     * @return void
+     */
+    public function __construct(public User $user, public $roomId)
     {}
 
     /**
@@ -29,6 +36,16 @@ class ChatEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('channel-chat');
+        return new PresenceChannel('room.' . $this->roomId);
+    }
+
+    /**
+     * The event's broadcast name
+     *
+     * @return string
+     */
+    public function broadcastAs()
+    {
+        return 'room.joined';
     }
 }
