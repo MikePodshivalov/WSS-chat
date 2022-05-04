@@ -90,6 +90,7 @@
                     const room = this.id.slice(-1);
                     $('#card-body-enter-' + room).attr("hidden",false);
                     $('#room-' + room).attr("hidden",true);
+                    $('#chat-messages-' + room).html('');
                     window.Echo.leave(`room.${room}`);
                     $('#user-list-' + room).html('');
                 });
