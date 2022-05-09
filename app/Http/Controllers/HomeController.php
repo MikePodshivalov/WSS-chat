@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Message;
 use App\Models\Room;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -12,19 +11,12 @@ class HomeController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
-    public function index(Room $room)
+    public function index(Room $room) : Renderable
     {
-        $userId = Auth::user()->id;
         $userName = Auth::user()->name;
-        $roomsEntered = $room->listOfRoomsUserEntered($userId);
         $rooms = Room::all();
-        $messages = Message::query()
-            ->join('users', 'users.id', '=', 'messages.user_id')
-            ->whereIn('room_id', $roomsEntered)
-            ->select('message', 'users.name', 'room_id', 'messages.created_at')
-            ->get();
-        return view('home', compact('userName', 'roomsEntered', 'messages', 'rooms'));
+        return view('home', compact('userName', 'rooms'));
     }
 }

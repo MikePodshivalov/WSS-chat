@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Models\User;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -12,11 +13,6 @@ use Illuminate\Queue\SerializesModels;
 class MessageSentEvent implements ShouldBroadcast
 {
     use Dispatchable, SerializesModels, InteractsWithSockets;
-
-    /**
-     * The queue on which to broadcast the event
-     */
-    public $broadcastQueue = 'events:message-created';
 
     /**
      * Create a new event instance.
@@ -29,9 +25,9 @@ class MessageSentEvent implements ShouldBroadcast
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return \Illuminate\Broadcasting\Channel|array
+     * @return Channel
      */
-    public function broadcastOn()
+    public function broadcastOn() : Channel
     {
         return new PresenceChannel('room.'. $this->roomId);
     }

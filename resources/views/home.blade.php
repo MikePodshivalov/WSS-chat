@@ -56,7 +56,8 @@
                 }).then(function (data) {
                     if (data.status === 200) {
                         renderMessages(data.data);
-                        scroll.animate({scrollTop: $(this).height()});
+                        // scroll.animate({scrollTop: $(this).height()});
+                        scroll.scrollTop(scroll[0].scrollHeight);
                     } else {
                         console.log('status is not OK from fetchMessages');
                     }
@@ -82,7 +83,7 @@
                     .listen('MessageSentEvent', (data) => {
                         let messageGet = $('#chat-messages-' + data.roomId);
                         messageGet.append(theirMessages(data));
-                        messageGet.animate({scrollTop: $(this).height()});
+                        messageGet.scrollTop(messageGet[0].scrollHeight);
                     });
 
                 //выход из комнаты по нажатию на кнопку
@@ -120,7 +121,7 @@
                                 </div>
                             </div>
                         </div>`);
-                        messageCreated.animate({scrollTop: $(this).height()});
+                        messageCreated.scrollTop(messageCreated[0].scrollHeight);
                         $('#message-' + response.data.room_id).val('');
                 }}).catch(function (error) {
                         console.log(error);
@@ -140,7 +141,7 @@
                     message.append(theirMessages(data.messages[i]));
                 }
             }
-            message.animate({scrollTop: $(this).height()});
+            message.scrollTop(message[0].scrollHeight);
         }
 
         function myMessage(data) {

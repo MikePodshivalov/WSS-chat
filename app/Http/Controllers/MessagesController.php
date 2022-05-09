@@ -5,15 +5,18 @@ namespace App\Http\Controllers;
 use App\Events\MessageSentEvent;
 use App\Events\RoomEnteredEvent;
 use App\Models\Message;
-use App\Models\Room;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
-
 
 class MessagesController extends Controller
 {
-    public function fetchMessages(Request $request, Room $room, Message $message)
+    /**
+     * @param Request $request
+     * @param Message $message
+     * @return JsonResponse
+     */
+    public function fetchMessages(Request $request, Message $message) : JsonResponse
     {
         $request->validate([
             'room_id' => 'required|integer',
@@ -32,7 +35,11 @@ class MessagesController extends Controller
         return Response::json($responseData, 200);
     }
 
-    public function store(Request $request)
+    /**
+     * @param Request $request
+     * @return false|JsonResponse
+     */
+    public function store(Request $request) : JsonResponse|false
     {
         $request->validate([
             'room_id' => 'required|integer',
@@ -46,11 +53,11 @@ class MessagesController extends Controller
         ]);
 
         if ($message) {
-            broadcast(new MessageSentEvent($request->get('room_id'), $request->user(), $request->get('message'), $message->created_at))->toOthers();
+            broadcast(new MessageSentEvent($message->room_id, $request->user(), $message->message, $message->created_at))->toOthers();
             return Response::json([
-                'message' => $request->get('message'),
+                'message' => $message->message,
                 'user' => $request->user()->name,
-                'room_id' => $request->get('room_id'),
+                'room_id' => $message->room_id,
                 'created_at' => $message->created_at,
             ], 201);
         } else {
