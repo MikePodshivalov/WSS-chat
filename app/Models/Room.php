@@ -22,24 +22,4 @@ class Room extends Model
     {
         return $this->belongsToMany(User::class);
     }
-
-    public function addUserToRoom(User $user, Room $room)
-    {
-        return DB::table('room_user')->insert(
-            ['user_id' => $user->id, 'room_id' => $room->id,]
-        );
-    }
-
-    public function exitUserFromRoom(int $room_id, int $user_id)
-    {
-        return DB::table('room_user')->where([
-            ['room_id', $room_id],
-            ['user_id', $user_id],
-        ])->delete();
-    }
-
-    public function listOfRoomsUserEntered(int $userId) : array
-    {
-        return DB::table('room_user')->where('user_id', $userId)->pluck('room_id')->toArray();
-    }
 }
